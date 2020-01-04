@@ -1,6 +1,7 @@
-import { app, BrowserWindow } from "electron";
+import { app, BrowserWindow, Menu } from "electron";
 import windowStateKeeper from "electron-window-state";
 import updater from "./updater";
+import { menu, createTray } from "./menu";
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -8,6 +9,8 @@ let win;
 
 function createWindow() {
   setTimeout(updater, 3000);
+
+  createTray(win);
 
   // Window state manager
   let state = windowStateKeeper({
@@ -29,6 +32,9 @@ function createWindow() {
 
   // and load the index.html of the app.
   win.loadFile("index.html");
+
+  // Set window menu
+  Menu.setApplicationMenu(menu);
 
   // Open the DevTools.
   win.webContents.openDevTools();

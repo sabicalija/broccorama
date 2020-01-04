@@ -30,6 +30,10 @@ export default merge.smart(baseConfig, {
       {
         from: join(__dirname, "../src/package.json"),
         to: join(__dirname, "../dist/package.json")
+      },
+      {
+        from: join(__dirname, "../public/favicon/logo.png"),
+        to: join(__dirname, "../dist/logo.png")
       }
     ])
   ],
