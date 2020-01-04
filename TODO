@@ -1,0 +1,3 @@
+* automate dev-app-update.yml injection
+* add yarn scripts for debugging
+* automate package.json generation for app
