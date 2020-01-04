@@ -26,6 +26,10 @@ export default merge.smart(baseConfig, {
       {
         from: path.join(__dirname, "../src/package.json"),
         to: path.join(__dirname, "../dist/package.json")
+      },
+      {
+        from: path.join(__dirname, "../packages/latest-linux.yml"),
+        to: path.join(__dirname, "../dist/dev-app-update.yml")
       }
     ])
   ],
