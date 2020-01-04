@@ -1,0 +1,14 @@
+{
+  "name": "broccorama",
+  "productName": "Broccorama",
+  "version": "0.0.1",
+  "description": "Food, Sports & Adventure Journal",
+  "main": "main.js",
+  "repository": "https://github.com/sabicalija/broccorama.git",
+  "author": "Alija Sabic <sabic.alija@gmail.com>",
+  "license": "GPL-3.0",
+  "private": true,
+  "scripts": {},
+  "devDependencies": {},
+  "dependencies": {}
+}
