@@ -23,8 +23,8 @@ export default {
     libraryTarget: "commonjs2"
   },
   resolve: {
-    extensions: [".js", ".jsx", "json"],
-    modules: [path.join(__dirname, "..", "app"), "node_modules"]
+    extensions: [".js", ".jsx", ".json"],
+    modules: [path.join(__dirname, "..", "src"), "node_modules"]
   },
   plugins: [
     new webpack.EnvironmentPlugin({
