@@ -1,6 +1,6 @@
 {
   "name": "broccorama",
-  "productName": "Broccorama",
+  "productName": "Brocc-o-rama",
   "version": "0.0.1",
   "description": "Food, Sports & Adventure Journal",
   "repository": "https://github.com/sabicalija/broccorama.git",
@@ -16,7 +16,9 @@
     "build:main": "cross-env NODE_ENV=production webpack -r @babel/register --config ./config/webpack.config.main.babel.js --colors",
     "build:renderer": "cross-env NODE_ENV=production webpack --config ./config/webpack.config.renderer.babel.js --colors",
     "start": "cross-env NODE_ENV=production electron ./dist",
-    "prestart": "yarn build"
+    "prestart": "yarn build",
+    "package": "electron-builder -l",
+    "release": "electron-builder -l -p 'onTagOrDraft'"
   },
   "devDependencies": {
     "@babel/core": "^7.7.7",
@@ -29,6 +31,7 @@
     "cross-env": "^6.0.3",
     "css-loader": "^3.4.1",
     "electron": "^7.1.7",
+    "electron-builder": "^21.2.0",
     "html-webpack-plugin": "^3.2.0",
     "nodemon": "^2.0.2",
     "optimize-css-assets-webpack-plugin": "^5.0.3",
@@ -45,6 +48,24 @@
     "webpack-merge": "^4.2.2"
   },
   "dependencies": {
+    "electron-log": "^4.0.2",
+    "electron-updater": "^4.2.0",
     "vue": "^2.6.11"
+  },
+  "build": {
+    "appId": "at.sabic.broccorama",
+    "copyright": "Copyright 2020 Alija Sabic",
+    "publish": {
+      "provider": "github"
+    },
+    "directories": {
+      "output": "packages",
+      "app": "dist"
+    },
+    "mac": {},
+    "win": {},
+    "linux": {
+      "category": "Utility"
+    }
   }
 }

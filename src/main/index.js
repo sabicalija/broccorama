@@ -1,10 +1,13 @@
 const { app, BrowserWindow } = require("electron");
+const updater = require("./updater");
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let win;
 
 function createWindow() {
+  setTimeout(updater, 3000);
+
   // Create the browser window.
   win = new BrowserWindow({
     width: 800,
