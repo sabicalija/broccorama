@@ -1,4 +1,5 @@
 import { app, BrowserWindow } from "electron";
+import windowStateKeeper from "electron-window-state";
 import updater from "./updater";
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -8,10 +9,18 @@ let win;
 function createWindow() {
   setTimeout(updater, 3000);
 
+  // Window state manager
+  let state = windowStateKeeper({
+    defaultWidth: 600,
+    defaultHeight: 800
+  });
+
   // Create the browser window.
   win = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: state.width,
+    height: state.height,
+    x: state.x,
+    y: state.y,
     webPreferences: {
       nodeIntegration: true
     },
@@ -24,7 +33,11 @@ function createWindow() {
   // Open the DevTools.
   win.webContents.openDevTools();
 
+  // Show app when ready.
   win.once("ready-to-show", win.show);
+
+  // Set state manger.
+  state.manage(win);
 
   // Emitted when the window is closed.
   win.on("closed", () => {
