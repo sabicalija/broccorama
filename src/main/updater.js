@@ -7,8 +7,7 @@ autoUpdater.logger.transports.file.level = "info";
 autoUpdater.autoDownload = false;
 
 module.exports = () => {
-  autoUpdater.checkForUpdates();
-  debugger;
+  autoUpdater.checkForUpdates().catch(e => console.error(e.message));
   autoUpdater.on("update-available", () => {
     dialog
       .showMessageBox({
@@ -20,7 +19,8 @@ module.exports = () => {
       })
       .then(({ response: buttonIdx }) => {
         if (buttonIdx === 0) autoUpdater.downloadUpdate();
-      });
+      })
+      .catch(e => console.error(e.message));
   });
 
   autoUpdater.on("update-downloaded", () => {
@@ -33,6 +33,7 @@ module.exports = () => {
       })
       .then(({ response: buttonIdx }) => {
         if (buttonIdx === 0) autoUpdater.quitAndInstall(false, true);
-      });
+      })
+      .catch(e => console.error(e.message));
   });
 };
