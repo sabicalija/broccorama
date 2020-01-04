@@ -39,7 +39,7 @@ export default merge.smart(baseConfig, {
   }
 });
 
-const createAppUpdateFiles = () => {
+function createAppUpdateFiles() {
   const source = join(__dirname, "../packages/latest-linux.yml");
   const target = join(__dirname, "../dist/dev-app-update.yml");
   exists(source, exists => {
@@ -54,4 +54,4 @@ const createAppUpdateFiles = () => {
       });
     }
   });
-};
+}
