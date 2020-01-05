@@ -35,13 +35,15 @@ export default merge.smart(baseConfig, {
       },
       {
         test: /\.vue$/,
-        use: {
-          loader: "vue-loader"
-        }
+        use: "vue-loader"
       },
       {
         test: /\.css$/,
         use: ["vue-style-loader", "css-loader"]
+      },
+      {
+        test: /\.styl(us)?$/,
+        use: ["vue-style-loader", "css-loader", "stylus-loader"]
       }
     ]
   },
