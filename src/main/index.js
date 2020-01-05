@@ -16,7 +16,7 @@ function createWindow() {
 
   // Window state manager
   let state = windowStateKeeper({
-    defaultWidth: 600,
+    defaultWidth: 500,
     defaultHeight: 800
   });
 
@@ -24,6 +24,7 @@ function createWindow() {
   win = new BrowserWindow({
     width: state.width,
     height: state.height,
+    minWidth: 500,
     x: state.x,
     y: state.y,
     webPreferences: {
