@@ -1,8 +1,8 @@
 <template>
   <div id="app">
-    <Tools />
+    <Tools @add="handleAdd" />
     <Content />
-    <GlobalUI />
+    <GlobalUI :show="displayGlobalUI" @cancel="handleCancel" />
   </div>
 </template>
 
@@ -19,7 +19,17 @@ export default {
     GlobalUI
   },
   data() {
-    return {};
+    return {
+      displayGlobalUI: false
+    };
+  },
+  methods: {
+    handleAdd() {
+      this.displayGlobalUI = true;
+    },
+    handleCancel() {
+      this.displayGlobalUI = false;
+    }
   }
 };
 </script>

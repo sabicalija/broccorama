@@ -1,13 +1,18 @@
 <template>
   <header id="tools">
-    <button id="add">+</button>
+    <button @click="handleAdd" id="add">+</button>
     <input id="search" type="text" placeholder="Search" />
   </header>
 </template>
 
 <script>
 export default {
-  name: "Tools"
+  name: "Tools",
+  methods: {
+    handleAdd() {
+      this.$emit("add");
+    }
+  }
 };
 </script>
 
