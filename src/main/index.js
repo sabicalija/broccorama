@@ -1,15 +1,17 @@
-import { app, BrowserWindow, Menu } from "electron";
+import { app, BrowserWindow, Menu, webContents } from "electron";
 import windowStateKeeper from "electron-window-state";
 import updater from "./updater";
 import { menu, createTray } from "./menu";
+
+import installExtension, { VUEJS_DEVTOOLS } from "electron-devtools-installer";
+
+const { NODE_ENV } = process.env;
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let win;
 
 function createWindow() {
-  setTimeout(updater, 3000);
-
   createTray(win);
 
   // Window state manager
@@ -37,7 +39,7 @@ function createWindow() {
   Menu.setApplicationMenu(menu);
 
   // Open the DevTools.
-  win.webContents.openDevTools();
+  if (NODE_ENV === "development") openDevTools();
 
   // Show app when ready.
   win.once("ready-to-show", win.show);
@@ -54,10 +56,39 @@ function createWindow() {
   });
 }
 
+async function setupDevelopment() {
+  try {
+    await installExtension(VUEJS_DEVTOOLS)
+      .then(name => console.log(`Added Extension: ${name}`))
+      .catch(err => console.log("An error occurred: ", err));
+  } catch (e) {
+    console.error("Vue Devtools failed to install:", e.toString());
+  }
+}
+
+function openDevTools() {
+  win.webContents.executeJavaScript("require('devtron').install();");
+  win.webContents.openDevTools({ mode: "undocked" });
+  // win.webContents.on("devtools-opened", () => {
+  //   win.webContents.once("devtools-focused", () => {
+  //     const devtools = win.webContents.devToolsWebContents;
+  //     // Insert Input Event
+  //   });
+  // });
+}
+
+function checkForUpdate() {
+  setTimeout(updater, 3000);
+}
+
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on("ready", createWindow);
+app.on("ready", async () => {
+  if (NODE_ENV === "development") await setupDevelopment();
+  checkForUpdate();
+  createWindow();
+});
 
 // Quit when all windows are closed.
 app.on("window-all-closed", () => {
