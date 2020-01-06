@@ -1,7 +1,8 @@
 <template>
   <div id="app">
-    <Tools @add="handleAdd" :search.sync="filter" />
+    <Tools ref="tools" @add="handleAdd" :search.sync="filter" />
     <Content
+      ref="content"
       :data="filteredItems"
       :selected="selection"
       @selection="handleSelection"
@@ -15,6 +16,7 @@
 </template>
 
 <script>
+import { shell, ipcRenderer } from "electron";
 import Tools from "./components/Tools.vue";
 import Content from "./components/Content.vue";
 import GlobalUI from "./components/GlobalUI.vue";
@@ -43,7 +45,9 @@ export default {
       );
     },
     selection() {
-      return this.selected || this.filteredItems[0].url || "";
+      return this.selected || this.filteredItems.length > 0
+        ? this.filteredItems[0].url
+        : "";
     }
   },
   methods: {
@@ -63,7 +67,6 @@ export default {
     },
     save() {
       const data = JSON.stringify(this.items);
-      console.log("SAVING", data);
       localStorage.setItem("broccorama-items", data);
     },
     load() {
@@ -72,6 +75,23 @@ export default {
   },
   created() {
     this.load();
+    ipcRenderer.on("menu-new-recipe", () => {
+      this.handleAdd();
+    });
+    ipcRenderer.on("menu-open-recipe", () => {
+      if (this.filteredItems.length > 0) {
+        this.$refs.content.open();
+      }
+    });
+    ipcRenderer.on("menu-open-native", () => {
+      if (this.filteredItems.length > 0) {
+        shell.openExternal(this.selection);
+      }
+    });
+    ipcRenderer.on("menu-search-recipe", () => {
+      console.log(this.$refs.tools);
+      this.$refs.tools.focusSearch();
+    });
   }
 };
 </script>

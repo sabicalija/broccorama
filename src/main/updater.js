@@ -1,12 +1,13 @@
-const { dialog } = require("electron");
-const { autoUpdater } = require("electron-updater");
+import { dialog } from "electron";
+import logger from "electron-log";
+import { autoUpdater } from "electron-updater";
 
-autoUpdater.logger = require("electron-log");
+autoUpdater.logger = logger;
 autoUpdater.logger.transports.file.level = "info";
 
 autoUpdater.autoDownload = false;
 
-module.exports = () => {
+export default () => {
   autoUpdater.checkForUpdates().catch(e => console.error(e.message));
   autoUpdater.on("update-available", () => {
     dialog

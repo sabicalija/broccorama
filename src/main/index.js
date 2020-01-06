@@ -1,10 +1,12 @@
 import { app, BrowserWindow, Menu, ipcMain } from "electron";
+import logger from "electron-log";
 import windowStateKeeper from "electron-window-state";
-import updater from "./updater";
-import { menu, createTray } from "./menu";
-import readItem from "./readItem";
 
 import installExtension, { VUEJS_DEVTOOLS } from "electron-devtools-installer";
+
+import { createMenu, createTray } from "./menu.js";
+import updater from "./updater.js";
+import readItem from "./readItem.js";
 
 const { NODE_ENV } = process.env;
 
@@ -13,8 +15,6 @@ const { NODE_ENV } = process.env;
 let win;
 
 function createWindow() {
-  createTray(win);
-
   // Window state manager
   let state = windowStateKeeper({
     defaultWidth: 500,
@@ -37,8 +37,11 @@ function createWindow() {
   // and load the index.html of the app.
   win.loadFile("index.html");
 
-  // Set window menu
-  Menu.setApplicationMenu(menu);
+  // Create application tray.
+  createTray();
+
+  // Create application window menu.
+  createMenu(win);
 
   // Open the DevTools.
   if (NODE_ENV === "development") openDevTools();
@@ -46,7 +49,7 @@ function createWindow() {
   // Show app when ready.
   win.once("ready-to-show", win.show);
 
-  // Set state manger.
+  // Set state manager.
   state.manage(win);
 
   // Emitted when the window is closed.
@@ -59,13 +62,9 @@ function createWindow() {
 }
 
 async function setupDevelopment() {
-  try {
-    await installExtension(VUEJS_DEVTOOLS)
-      .then(name => console.log(`Added Extension: ${name}`))
-      .catch(err => console.log("An error occurred: ", err));
-  } catch (e) {
-    console.error("Vue Devtools failed to install:", e.toString());
-  }
+  await installExtension(VUEJS_DEVTOOLS)
+    .then(name => logger.info(`Added Extension: ${name}`))
+    .catch(error => logger.error(error.toString()));
 }
 
 function openDevTools() {

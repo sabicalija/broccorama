@@ -3,6 +3,7 @@
     <button @click="handleAdd" id="add">+</button>
     <input
       id="search"
+      ref="search"
       type="text"
       placeholder="Search"
       v-model="search"
@@ -22,6 +23,9 @@ export default {
   methods: {
     handleAdd() {
       this.$emit("add");
+    },
+    focusSearch() {
+      this.$refs.search.focus();
     }
   }
 };

@@ -1,8 +1,9 @@
 <template>
   <main id="content">
-    <p v-if="this.data.length === 0" id="no-items">No Items</p>
+    <p id="no-items" v-if="this.data.length === 0">No Items</p>
     <div v-else>
       <Entry
+        ref="items"
         v-for="(item, i) of data"
         :key="i"
         :data="item"
@@ -30,7 +31,11 @@ export default {
       default: ""
     }
   },
-  methods: {}
+  methods: {
+    open() {
+      this.$refs.items.find(({ selected }) => selected).handleDblClick();
+    }
+  }
 };
 </script>
 
