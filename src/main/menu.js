@@ -42,7 +42,11 @@ const createMenu = win => {
     { role: "windowMenu" },
     {
       role: "help",
-      submenu: []
+      submenu: [
+        {
+          role: "about"
+        }
+      ]
     }
   ]);
   Menu.setApplicationMenu(menu);

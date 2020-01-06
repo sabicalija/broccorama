@@ -65,10 +65,17 @@
       "output": "packages",
       "app": "dist"
     },
-    "mac": {},
-    "win": {},
+    "mac": {
+      "icon": "../public/favicon/logo.icns"
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "../public/favicon/logo.ico"
+    },
     "linux": {
-      "category": "Utility"
+      "icon": "../public/favicon/logo256x256.png",
+      "category": "Utility",
+      "target": "deb"
     }
   }
 }
