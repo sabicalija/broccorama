@@ -1,7 +1,11 @@
 <template>
   <div id="app">
     <Tools @add="handleAdd" :search.sync="filter" />
-    <Content :data="filteredItems" />
+    <Content
+      :data="filteredItems"
+      :selected="selection"
+      @selection="handleSelection"
+    />
     <GlobalUI
       :show="displayGlobalUI"
       @cancel="handleCancel"
@@ -26,6 +30,7 @@ export default {
     return {
       displayGlobalUI: false,
       items: null,
+      selected: null,
       filter: ""
     };
   },
@@ -36,6 +41,9 @@ export default {
           ? true
           : title.toLowerCase().indexOf(this.filter.toLowerCase()) >= 0
       );
+    },
+    selection() {
+      return this.selected || this.filteredItems[0].url || "";
     }
   },
   methods: {
@@ -49,6 +57,9 @@ export default {
       this.items.push(item);
       this.save();
       this.displayGlobalUI = false;
+    },
+    handleSelection(url) {
+      this.selected = url;
     },
     save() {
       const data = JSON.stringify(this.items);

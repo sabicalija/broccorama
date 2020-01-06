@@ -2,7 +2,13 @@
   <main id="content">
     <p v-if="this.data.length === 0" id="no-items">No Items</p>
     <div v-else>
-      <Entry v-for="(item, i) of data" :key="i" :data="item" />
+      <Entry
+        v-for="(item, i) of data"
+        :key="i"
+        :data="item"
+        :selected="item.url === selected"
+        @click="$emit('selection', item.url)"
+      />
     </div>
   </main>
 </template>
@@ -18,8 +24,13 @@ export default {
     data: {
       type: Array,
       default: () => []
+    },
+    selected: {
+      type: String,
+      default: ""
     }
-  }
+  },
+  methods: {}
 };
 </script>
 

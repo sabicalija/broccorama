@@ -1,5 +1,5 @@
 <template>
-  <div id="item">
+  <div id="item" :class="{ selected }" @click="$emit('click')">
     <img id="picture" :src="screenshot" />
     <h2 id="title">{{ title }}</h2>
   </div>
@@ -12,6 +12,10 @@ export default {
     data: {
       type: Object,
       required: true
+    },
+    selected: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
@@ -32,7 +36,13 @@ export default {
   align-content center
   border-bottom lightgray 2px solid
   background #fafafa
+  height 5.5rem
   padding 10px
+  border-left: 10px solid lightgray
+  &:hover
+    background-color #eee
+  &.selected
+    border-left-color dodgerblue
 
 #picture
   width 20%
