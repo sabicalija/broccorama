@@ -89,7 +89,6 @@ export default {
       }
     });
     ipcRenderer.on("menu-search-recipe", () => {
-      console.log(this.$refs.tools);
       this.$refs.tools.focusSearch();
     });
   }

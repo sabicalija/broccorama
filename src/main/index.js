@@ -4,7 +4,7 @@ import windowStateKeeper from "electron-window-state";
 
 import installExtension, { VUEJS_DEVTOOLS } from "electron-devtools-installer";
 
-import { createMenu, createTray } from "./menu.js";
+import { createMenu } from "./menu.js";
 import updater from "./updater.js";
 import readItem from "./readItem.js";
 
@@ -36,9 +36,6 @@ function createWindow() {
 
   // and load the index.html of the app.
   win.loadFile("index.html");
-
-  // Create application tray.
-  createTray();
 
   // Create application window menu.
   createMenu(win);
