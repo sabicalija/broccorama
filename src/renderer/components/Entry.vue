@@ -1,5 +1,10 @@
 <template>
-  <div id="item" :class="{ selected }" @click="$emit('click')">
+  <div
+    id="item"
+    :class="{ selected }"
+    @click="$emit('click')"
+    @dblclick="handleDblClick"
+  >
     <img id="picture" :src="screenshot" />
     <h2 id="title">{{ title }}</h2>
   </div>
@@ -25,6 +30,22 @@ export default {
     title() {
       return this.data.title;
     }
+  },
+  methods: {
+    handleDblClick() {
+      window.open(
+        this.data.url,
+        "",
+        `
+        maxWidth=2000,
+        maxHeight=2000,
+        width=1200,
+        height=800,
+        nodeIntegration=0,
+        contextIsolation=1
+      `
+      );
+    }
   }
 };
 </script>
@@ -39,6 +60,7 @@ export default {
   height 5.5rem
   padding 10px
   border-left: 10px solid lightgray
+  user-select none
   &:hover
     background-color #eee
   &.selected
