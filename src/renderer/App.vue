@@ -1,8 +1,12 @@
 <template>
   <div id="app">
     <Tools @add="handleAdd" />
-    <Content />
-    <GlobalUI :show="displayGlobalUI" @cancel="handleCancel" />
+    <Content :data="items" />
+    <GlobalUI
+      :show="displayGlobalUI"
+      @cancel="handleCancel"
+      @done="handleDone"
+    />
   </div>
 </template>
 
@@ -20,7 +24,8 @@ export default {
   },
   data() {
     return {
-      displayGlobalUI: false
+      displayGlobalUI: false,
+      items: null
     };
   },
   methods: {
@@ -29,44 +34,63 @@ export default {
     },
     handleCancel() {
       this.displayGlobalUI = false;
+    },
+    handleDone(item) {
+      this.items.push(item);
+      this.save();
+      this.displayGlobalUI = false;
+    },
+    save() {
+      const data = JSON.stringify(this.items);
+      console.log("SAVING", data);
+      localStorage.setItem("broccorama-items", data);
+    },
+    load() {
+      this.items = JSON.parse(localStorage.getItem("broccorama-items")) || [];
     }
+  },
+  created() {
+    this.load();
   }
 };
 </script>
 
-<style>
-html,
-body {
-  padding: 0;
-  margin: 0;
-}
-html,
-body,
-div#app {
-  height: 100%;
-  width: 100%;
-}
-body {
-  font: caption;
-  margin: 0;
-  display: flex;
-}
-button,
-input {
-  font-size: 20px;
-  border-radius: 5px;
-}
-button {
-  background: dodgerblue;
-  color: white;
-  border: none;
-  outline: none;
-}
-input {
-  border: 1px solid silver;
-  padding: 0 10px;
-}
-input::placeholder {
-  color: lightgray;
-}
+<style lang="stylus">
+:focus
+  outline-offset -2px
+  outline auto 5px darken(dodgerblue,40%)
+  z-index 6
+
+html, body
+  padding 0
+  margin 0
+
+html, body, #app
+  height 100%
+  width 100%
+
+body
+  font caption
+  margin 0
+  display flex
+
+#app
+  display flex
+  flex-flow column
+
+button, input
+  font-size 20px
+  border-radius 5px
+
+button
+  background dodgerblue
+  color white
+  border none
+  outline none
+
+input
+  border 1px solid silver
+  padding 0 10px
+  &::placeholder
+    color lightgray
 </style>

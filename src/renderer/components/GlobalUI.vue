@@ -1,12 +1,35 @@
 <template>
   <div id="global-ui" :style="{ display: show ? 'flex' : 'none' }">
-    <input id="url" type="text" placeholder="Enter URL" />
-    <button id="add">Add Item</button>
-    <button id="cancel" @click="handleCancel">Cancel</button>
+    <input
+      autofocus
+      id="url"
+      type="text"
+      placeholder="Enter URL"
+      v-model="input"
+      @keyup.enter="handleAdd"
+    />
+    <button
+      id="add"
+      :disabled="processing || notReady"
+      :class="{ processing: processing || notReady }"
+      @click="handleAdd"
+    >
+      {{ processing ? "Loading..." : "Add Item" }}
+    </button>
+    <button
+      id="cancel"
+      :disabled="processing"
+      :class="{ processing }"
+      :style="{ display: processing ? 'none' : 'block' }"
+      @click="handleCancel"
+    >
+      Cancel
+    </button>
   </div>
 </template>
 
 <script>
+import { ipcRenderer } from "electron";
 export default {
   name: "GlobalUI",
   props: {
@@ -15,10 +38,37 @@ export default {
       default: true
     }
   },
+  data() {
+    return {
+      input: "",
+      processing: false
+    };
+  },
+  computed: {
+    notReady() {
+      return this.input === "";
+    }
+  },
   methods: {
+    handleAdd() {
+      if (this.notReady) return;
+      this.processing = true;
+      ipcRenderer.send("new-item", this.input);
+    },
     handleCancel() {
+      this.input = "";
       this.$emit("cancel");
     }
+  },
+  // mounted() {
+  //   $refs.input.focus();
+  // },
+  created() {
+    ipcRenderer.on("new-item-success", (e, item) => {
+      this.processing = false;
+      this.input = "";
+      this.$emit("done", item);
+    });
   }
 };
 </script>
@@ -47,4 +97,6 @@ export default {
     background white
     color black
     margin-left 15px
+.processing
+  background-color gray
 </style>

@@ -1,7 +1,8 @@
-import { app, BrowserWindow, Menu, webContents } from "electron";
+import { app, BrowserWindow, Menu, ipcMain } from "electron";
 import windowStateKeeper from "electron-window-state";
 import updater from "./updater";
 import { menu, createTray } from "./menu";
+import readItem from "./readItem";
 
 import installExtension, { VUEJS_DEVTOOLS } from "electron-devtools-installer";
 
@@ -110,3 +111,8 @@ app.on("activate", () => {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
+ipcMain.on("new-item", (e, url) => {
+  readItem(url, item => {
+    e.sender.send("new-item-success", item);
+  });
+});
