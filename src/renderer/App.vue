@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <Tools @add="handleAdd" />
-    <Content :data="items" />
+    <Tools @add="handleAdd" :search.sync="filter" />
+    <Content :data="filteredItems" />
     <GlobalUI
       :show="displayGlobalUI"
       @cancel="handleCancel"
@@ -25,8 +25,18 @@ export default {
   data() {
     return {
       displayGlobalUI: false,
-      items: null
+      items: null,
+      filter: ""
     };
+  },
+  computed: {
+    filteredItems() {
+      return this.items.filter(({ title }) =>
+        this.filter === ""
+          ? true
+          : title.toLowerCase().indexOf(this.filter.toLowerCase()) >= 0
+      );
+    }
   },
   methods: {
     handleAdd() {

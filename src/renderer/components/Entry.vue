@@ -21,9 +21,6 @@ export default {
     title() {
       return this.data.title;
     }
-  },
-  created() {
-    console.log(this.data);
   }
 };
 </script>

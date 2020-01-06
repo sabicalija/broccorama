@@ -1,13 +1,24 @@
 <template>
   <header id="tools">
     <button @click="handleAdd" id="add">+</button>
-    <input id="search" type="text" placeholder="Search" />
+    <input
+      id="search"
+      type="text"
+      placeholder="Search"
+      v-model="search"
+      @input="$emit('update:search', search)"
+    />
   </header>
 </template>
 
 <script>
 export default {
   name: "Tools",
+  data() {
+    return {
+      search: ""
+    };
+  },
   methods: {
     handleAdd() {
       this.$emit("add");
