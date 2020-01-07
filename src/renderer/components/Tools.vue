@@ -13,6 +13,7 @@
 </template>
 
 <script>
+import { EventBus, cancelTunnel } from "../eventbus";
 export default {
   name: "Tools",
   data() {
@@ -22,11 +23,19 @@ export default {
   },
   methods: {
     handleAdd() {
-      this.$emit("add");
-    },
-    focusSearch() {
-      this.$refs.search.focus();
+      this.$router.push("/global-ui");
     }
+  },
+  created() {
+    EventBus.$once("menu-new-recipe", () => {
+      this.$router.push("/global-ui");
+    });
+    EventBus.$once("menu-search-recipe", () => {
+      this.$refs.search.focus();
+    });
+  },
+  beforeDestroy() {
+    cancelTunnel(["menu-new-recipe", "menu-search-recipe"]);
   }
 };
 </script>

@@ -23,8 +23,11 @@ export default {
     libraryTarget: "commonjs2"
   },
   resolve: {
+    alias: {
+      "@": path.join(__dirname, "../src")
+    },
     extensions: [".js", ".jsx", ".json"],
-    modules: [path.join(__dirname, "..", "src"), "node_modules"]
+    modules: [path.join(__dirname, "../src"), "node_modules"]
   },
   plugins: [
     new webpack.EnvironmentPlugin({

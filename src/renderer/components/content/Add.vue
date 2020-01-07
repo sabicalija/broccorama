@@ -10,8 +10,8 @@
     />
     <button
       id="add"
-      :disabled="processing || notReady"
-      :class="{ processing: processing || notReady }"
+      :disabled="processing || notValid"
+      :class="{ processing: processing || notValid }"
       @click="handleAdd"
     >
       {{ processing ? "Loading..." : "Add Item" }}
@@ -31,7 +31,7 @@
 <script>
 import { ipcRenderer } from "electron";
 export default {
-  name: "GlobalUI",
+  name: "Add",
   props: {
     show: {
       type: Boolean,
@@ -45,13 +45,13 @@ export default {
     };
   },
   computed: {
-    notReady() {
+    notValid() {
       return this.input === "";
     }
   },
   methods: {
     handleAdd() {
-      if (this.notReady) return;
+      if (this.notValid) return;
       this.processing = true;
       ipcRenderer.send("new-item", this.input);
     },

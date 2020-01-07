@@ -1,105 +1,35 @@
 <template>
   <div id="app">
-    <Tools ref="tools" @add="handleAdd" :search.sync="filter" />
-    <Content
-      ref="content"
-      :data="filteredItems"
-      :selected="selection"
-      @selection="handleSelection"
-    />
-    <GlobalUI
-      :show="displayGlobalUI"
-      @cancel="handleCancel"
-      @done="handleDone"
-    />
+    <router-view />
   </div>
 </template>
 
 <script>
-import { shell, ipcRenderer } from "electron";
-import Tools from "./components/Tools.vue";
-import Content from "./components/Content.vue";
-import GlobalUI from "./components/GlobalUI.vue";
+import { tunnelEvents, cancelTunnel } from "./eventbus";
 
 export default {
   name: "App",
-  components: {
-    Tools,
-    Content,
-    GlobalUI
-  },
   data() {
-    return {
-      displayGlobalUI: false,
-      items: null,
-      selected: null,
-      filter: ""
-    };
+    return {};
   },
-  computed: {
-    filteredItems() {
-      return this.items.filter(({ title }) =>
-        this.filter === ""
-          ? true
-          : title.toLowerCase().indexOf(this.filter.toLowerCase()) >= 0
-      );
-    },
-    selection() {
-      return this.selected || this.filteredItems.length > 0
-        ? this.filteredItems[0].url
-        : "";
-    }
-  },
-  methods: {
-    handleAdd() {
-      this.displayGlobalUI = true;
-    },
-    handleCancel() {
-      this.displayGlobalUI = false;
-    },
-    handleDone(item) {
-      this.items.push(item);
-      this.save();
-      this.displayGlobalUI = false;
-    },
-    handleSelection(url) {
-      this.selected = url;
-    },
-    save() {
-      const data = JSON.stringify(this.items);
-      localStorage.setItem("broccorama-items", data);
-    },
-    load() {
-      this.items = JSON.parse(localStorage.getItem("broccorama-items")) || [];
-    }
-  },
+  computed: {},
+  methods: {},
   created() {
-    this.load();
-    ipcRenderer.on("menu-new-recipe", () => {
-      this.handleAdd();
-    });
-    ipcRenderer.on("menu-open-recipe", () => {
-      if (this.filteredItems.length > 0) {
-        this.$refs.content.open();
-      }
-    });
-    ipcRenderer.on("menu-open-native", () => {
-      if (this.filteredItems.length > 0) {
-        shell.openExternal(this.selection);
-      }
-    });
-    ipcRenderer.on("menu-search-recipe", () => {
-      this.$refs.tools.focusSearch();
-    });
+    this.$store.commit("load");
+    tunnelEvents([
+      "menu-new-recipe",
+      "menu-open-recipe",
+      "menu-open-native",
+      "menu-search-recipe"
+    ]);
   }
 };
 </script>
 
 <style lang="stylus">
 :focus
-  outline-offset -2px
-  outline auto 5px darken(dodgerblue,40%)
-  z-index 6
+  outline none
+  box-shadow 0 0 0 2px darken(dodgerblue, 20%)
 
 html, body
   padding 0

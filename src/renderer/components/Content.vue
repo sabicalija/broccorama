@@ -1,40 +1,84 @@
 <template>
   <main id="content">
-    <p id="no-items" v-if="this.data.length === 0">No Items</p>
+    <p id="no-items" v-if="filterRecipesByName(this.filter).length === 0">
+      No Items
+    </p>
     <div v-else>
       <Entry
         ref="items"
-        v-for="(item, i) of data"
+        v-for="(item, i) of filterRecipesByName(this.filter)"
         :key="i"
         :data="item"
-        :selected="item.url === selected"
-        @click="$emit('selection', item.url)"
+        :selected="selected(item, i === 0)"
+        @click="$emit('update:selection', item.url)"
       />
     </div>
   </main>
 </template>
 
 <script>
-import Entry from "./Entry.vue";
+import Entry from "@/renderer/components/content/Entry.vue";
+
+import { shell } from "electron";
+import { mapGetters } from "vuex";
+import { EventBus, cancelTunnel } from "../eventbus";
+
 export default {
   name: "Content",
   components: {
     Entry
   },
   props: {
-    data: {
-      type: Array,
-      default: () => []
+    filter: {
+      type: String,
+      default: ""
     },
-    selected: {
+    selection: {
       type: String,
       default: ""
     }
   },
-  methods: {
-    open() {
-      this.$refs.items.find(({ selected }) => selected).handleDblClick();
+  data() {
+    return {};
+  },
+  computed: {
+    ...mapGetters(["filterRecipesByName"]),
+    anySelected() {
+      return this.filterRecipesByName(this.filter).find(
+        item => item.url === this.selection
+      );
+    },
+    f() {
+      return this.filter;
     }
+  },
+  methods: {
+    selected({ url }, first = false) {
+      const { anySelected, selection } = this;
+      if (first) {
+        if (!anySelected || !this.selection) {
+          return true;
+        }
+      }
+      return url === this.selection;
+    }
+  },
+  created() {
+    EventBus.$once("menu-open-recipe", () => {
+      if (this.filterRecipesByName(this.filter).length > 0) {
+        const selected = this.$refs.items.find(({ selected }) => selected);
+        selected.handleDblClick();
+      }
+    });
+    EventBus.$once("menu-open-native", () => {
+      if (this.filterRecipesByName(this.filter).length > 0) {
+        const selected = this.$refs.items.find(({ selected }) => selected);
+        shell.openExternal(selected.data.url);
+      }
+    });
+  },
+  beforeDestroy() {
+    cancelTunnel(["menu-open-recipe", "menu-open-native"]);
   }
 };
 </script>
