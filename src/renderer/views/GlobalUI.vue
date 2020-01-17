@@ -1,5 +1,5 @@
 <template>
-  <div><Add @cancel="handleCancel" /></div>
+  <div><Add /></div>
 </template>
 
 <script>
@@ -9,12 +9,7 @@ export default {
   components: {
     Add
   },
-  methods: {
-    handleCancel() {
-      // this.$router.push({ name: "home" });
-      this.$router.back();
-    }
-  }
+  methods: {}
 };
 </script>
 

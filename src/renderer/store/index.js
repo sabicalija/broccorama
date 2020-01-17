@@ -9,10 +9,14 @@ export default new Vuex.Store({
   },
   mutations: {
     load(state) {
-      state.recipes = JSON.parse(localStorage.getItem("broccorama-items"));
+      state.recipes =
+        JSON.parse(localStorage.getItem("broccorama-items")) || [];
     },
     save(state) {
       localStorage.setItem("broccorama-items", JSON.stringify(state.recipes));
+    },
+    push(state, item) {
+      state.recipes.push(item);
     }
   },
   getters: {

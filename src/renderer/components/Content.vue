@@ -64,13 +64,13 @@ export default {
     }
   },
   created() {
-    EventBus.$once("menu-open-recipe", () => {
+    EventBus.$on("menu-open-recipe", () => {
       if (this.filterRecipesByName(this.filter).length > 0) {
         const selected = this.$refs.items.find(({ selected }) => selected);
         selected.handleDblClick();
       }
     });
-    EventBus.$once("menu-open-native", () => {
+    EventBus.$on("menu-open-native", () => {
       if (this.filterRecipesByName(this.filter).length > 0) {
         const selected = this.$refs.items.find(({ selected }) => selected);
         shell.openExternal(selected.data.url);

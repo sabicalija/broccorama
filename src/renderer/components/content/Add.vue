@@ -1,7 +1,7 @@
 <template>
   <div id="global-ui" :style="{ display: show ? 'flex' : 'none' }">
     <input
-      autofocus
+      autofocus="true"
       id="url"
       type="text"
       placeholder="Enter URL"
@@ -58,16 +58,20 @@ export default {
     handleCancel() {
       this.input = "";
       this.$emit("cancel");
+      this.$router.back();
     }
   },
   // mounted() {
   //   $refs.input.focus();
   // },
   created() {
-    ipcRenderer.on("new-item-success", (e, item) => {
+    ipcRenderer.once("new-item-success", (e, item) => {
       this.processing = false;
       this.input = "";
+      this.$store.commit("push", item);
+      this.$store.commit("save");
       this.$emit("done", item);
+      this.$router.back();
     });
   }
 };

@@ -33,18 +33,19 @@ export default {
   },
   methods: {
     handleDblClick() {
-      window.open(
-        this.data.url,
-        "",
-        `
-        maxWidth=2000,
-        maxHeight=2000,
-        width=1200,
-        height=800,
-        nodeIntegration=0,
-        contextIsolation=1
-      `
-      );
+      // window.open(
+      //   this.data.url,
+      //   "",
+      //   `
+      //   maxWidth=2000,
+      //   maxHeight=2000,
+      //   width=1200,
+      //   height=800,
+      //   nodeIntegration=0,
+      //   contextIsolation=1
+      // `
+      // );
+      this.$router.push({ name: "recipe" });
     }
   }
 };
