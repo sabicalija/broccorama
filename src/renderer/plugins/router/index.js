@@ -1,9 +1,9 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 
-import Home from "../views/Home.vue";
-import Recipe from "../views/Recipe.vue";
-import GlobalUI from "../views/GlobalUI.vue";
+import Home from "routes/Home.vue";
+import Recipe from "routes/Recipe.vue";
+import GlobalUI from "routes/GlobalUI.vue";
 
 Vue.use(VueRouter);
 
@@ -16,6 +16,7 @@ const routes = [
   {
     path: "/recipe",
     name: "recipe",
+    props: true,
     component: Recipe
   },
   {

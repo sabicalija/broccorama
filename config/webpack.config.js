@@ -24,7 +24,8 @@ export default {
   },
   resolve: {
     alias: {
-      "@": path.join(__dirname, "../src")
+      "@": path.resolve(__dirname, "../src"),
+      routes: path.resolve(__dirname, "../src/renderer/views/")
     },
     extensions: [".js", ".jsx", ".json"],
     modules: [path.join(__dirname, "../src"), "node_modules"]

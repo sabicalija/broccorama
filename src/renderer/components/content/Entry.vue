@@ -29,6 +29,9 @@ export default {
     },
     title() {
       return this.data.title;
+    },
+    url() {
+      return this.data.url;
     }
   },
   methods: {
@@ -45,7 +48,7 @@ export default {
       //   contextIsolation=1
       // `
       // );
-      this.$router.push({ name: "recipe" });
+      this.$router.push({ name: "recipe", params: { url: this.url } });
     }
   }
 };

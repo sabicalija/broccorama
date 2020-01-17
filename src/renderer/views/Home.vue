@@ -9,8 +9,6 @@
 import Tools from "@/renderer/components/Tools.vue";
 import Content from "@/renderer/components/Content.vue";
 
-import { mapGetters } from "vuex";
-
 export default {
   name: "Home",
   components: {
@@ -22,9 +20,6 @@ export default {
       filter: "",
       selection: null
     };
-  },
-  computed: {
-    ...mapGetters(["filterRecipesByName"])
   },
   methods: {}
 };

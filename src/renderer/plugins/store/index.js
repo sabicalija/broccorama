@@ -16,7 +16,13 @@ export default new Vuex.Store({
       localStorage.setItem("broccorama-items", JSON.stringify(state.recipes));
     },
     push(state, item) {
-      state.recipes.push(item);
+      if (!state.recipes.find(({ url }) => url === item.url)) {
+        state.recipes.push(item);
+      }
+    },
+    update(state, item) {
+      const index = state.recipes.findIndex(({ url }) => url === item.url);
+      state.recipes[index] = item;
     }
   },
   getters: {
@@ -26,6 +32,9 @@ export default new Vuex.Store({
           ? true
           : title.toLowerCase().indexOf(name.toLowerCase()) >= 0
       );
+    },
+    getRecipeEntry: state => itemUrl => {
+      return state.recipes.find(({ url }) => url === itemUrl);
     }
   },
   actions: {},
