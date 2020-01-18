@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import Entry from "@/renderer/components/content/Entry.vue";
+import Entry from "@/components/content/Entry.vue";
 
 import { shell } from "electron";
 import { mapGetters } from "vuex";

@@ -1,6 +1,8 @@
 <template>
   <header id="tools">
-    <button @click="handleAdd" id="add">+</button>
+    <button @click="handleAdd" id="add">
+      <font-awesome-icon icon="plus" size="sm" />
+    </button>
     <input
       id="search"
       ref="search"
@@ -50,9 +52,10 @@ export default {
   box-shadow 0px 10px 10px rgba(0, 0, 0, 0.1)
 
 #add
-  padding 0px 12px 5px
   margin-right 10px
   font-size 30px
+  width 2.5rem
+  height 2.5rem
 
 #search
   flex-grow 1

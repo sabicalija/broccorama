@@ -33,7 +33,7 @@ export default new Vuex.Store({
           : title.toLowerCase().indexOf(name.toLowerCase()) >= 0
       );
     },
-    getRecipeEntry: state => itemUrl => {
+    getRecipeByUrl: state => itemUrl => {
       return state.recipes.find(({ url }) => url === itemUrl);
     }
   },

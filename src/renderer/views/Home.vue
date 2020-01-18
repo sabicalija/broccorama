@@ -6,8 +6,8 @@
 </template>
 
 <script>
-import Tools from "@/renderer/components/Tools.vue";
-import Content from "@/renderer/components/Content.vue";
+import Tools from "@/components/Tools.vue";
+import Content from "@/components/Content.vue";
 
 export default {
   name: "Home",

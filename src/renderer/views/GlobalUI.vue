@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import Add from "@/renderer/components/content/Add.vue";
+import Add from "@/components/content/Add.vue";
 export default {
   name: "GlobalUI",
   components: {
